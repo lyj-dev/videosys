@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.lyj.controller"/>
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <mvc:annotation-driven/>
+    <!--放行全部静态资源-->
+    <mvc:default-servlet-handler/>
+
+    <!-- 拦截器相关配置 -->
+    <!--<mvc:interceptors>
+        <mvc:interceptor>
+            &lt;!&ndash; 匹配的是url路径， 如果不配置或/**,将拦截所有的请求，如果web.xml中配置了/,拦截的资源包括Controller、静态资源等 &ndash;&gt;
+            <mvc:mapping path="/**" />
+            &lt;!&ndash; 排除某些不需要拦截的资源 &ndash;&gt;
+            <mvc:exclude-mapping path="/js/**"/>
+            <mvc:exclude-mapping path="/css/**"/>
+            <mvc:exclude-mapping path="/fonts/**"/>
+            <mvc:exclude-mapping path="/images/**"/>
+            <mvc:exclude-mapping path="/img/**"/>
+            <mvc:exclude-mapping path="/layui/**"/>
+            <mvc:exclude-mapping path="/images/**"/>
+            <mvc:exclude-mapping path="/behind/login.jsp"/>
+            <mvc:exclude-mapping path="/**/logout.do"/>
+            <mvc:exclude-mapping path="/**/login.do"/>
+            <mvc:exclude-mapping path="/before/**"/>
+
+            &lt;!&ndash; <mvc:exclude-mapping path="/login.html"/> &ndash;&gt;
+            &lt;!&ndash; 指定自定义拦截器 &ndash;&gt;
+            <bean class="com.lyj.interceptor.CommonInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
+
+    <!-- 配置全局异常处理的javaBean，这样DispatcherServlet就可以直接访问他 -->
+    <!--<bean class="com.lyj.common.NullpointerExceptionResolver"></bean>-->
+
+</beans>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lyj.dao.SpeakerDao">
+    <resultMap id="speakerMap" type="speaker">
+        <id column="id" property="id"></id>
+        <result column="speaker_name" property="name"></result>
+        <result column="speaker_desc" property="desc"></result>
+        <result column="speaker_job" property="job"></result>
+        <result column="head_img_url" property="headImgUrl"></result>
+    </resultMap>
+
+    <select id="findAllSpeakers" resultMap="speakerMap">
+        select * from speaker
+    </select>
+
+    <select id="selectSpeakerById" parameterType="int" resultMap="speakerMap">
+        select * from speaker where id=#{id}
+    </select>
+
+    <update id="updateSpeaker" parameterType="speaker">
+        update speaker set speaker_name=#{name}, speaker_desc=#{desc}, speaker_job=#{job} where id=#{id}
+    </update>
+
+    <insert id="addSpeaker" parameterType="speaker">
+        insert into speaker (speaker_name,speaker_desc,speaker_job) values (#{name}, #{desc}, #{job})
+    </insert>
+
+    <delete id="delete" parameterType="map">
+        delete from speaker where id in
+        <foreach collection="array" item="id" open="(" close=")" separator="," >
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

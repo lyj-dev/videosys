@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyj.dao.CourseDao">
+    <resultMap id="courseMap" type="course">
+        <id column="id" property="id"></id>
+        <result column="course_title" property="title"></result>
+        <result column="course_desc" property="desc"></result>
+        <result column="subject_id" property="subjectId"></result>
+        <result column="subject_name" property="subject"></result>
+    </resultMap>
+
+<!--    嵌套结果查询-->
+    <resultMap id="courseMap2" type="course">
+        <id column="courseId" property="id"></id>
+        <result column="course_title" property="title"></result>
+        <result column="course_desc" property="desc"></result>
+        <result column="subject_id" property="subjectId"></result>
+        <result column="subject_name" property="subject"></result>
+        <collection property="videoList" javaType="list" ofType="video"
+                    resultMap="com.lyj.dao.VideoDao.videoMap">
+        </collection>
+    </resultMap>
+
+
+
+    <select id="findAllCourses" resultMap="courseMap">
+        select c.*,s.subject_name
+        from course c
+        join subject s
+        on c.subject_id=s.id
+    </select>
+
+    <select id="selectCourseById" parameterType="int" resultMap="courseMap2">
+		SELECT
+            c.id courseId,
+            c.course_title,
+            c.course_desc,
+            s.subject_name,
+            v.*,
+            sp.speaker_name
+        FROM
+            course c
+            JOIN subject s ON c.subject_id = s.id
+            JOIN video v ON c.id = v.course_id
+            JOIN speaker sp ON v.speaker_id=sp.id
+		where c.id=#{id}
+    </select>
+
+    <update id="updateCourse" parameterType="course">
+        update course set course_title=#{title}, course_desc=#{desc}, subject_id=#{subjectId} where id=#{id}
+    </update>
+
+    <insert id="addCourse" parameterType="course">
+        insert into course (course_title,course_desc,subject_id) values (#{title}, #{desc}, #{subjectId})
+    </insert>
+
+    <delete id="delete" parameterType="map">
+        delete from course where id in
+        <foreach collection="array" item="id" open="(" close=")" separator="," >
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

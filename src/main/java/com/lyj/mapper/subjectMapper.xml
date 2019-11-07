@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lyj.dao.SubjectDao">
+    <resultMap id="subjectMap" type="subject">
+        <id column="id" property="id"></id>
+        <result column="subject_name" property="name"></result>
+        <collection property="courseList" javaType="list" ofType="course">
+            <id column="courseId" property="id"></id>
+            <result column="course_title" property="title"></result>
+            <result column="course_desc" property="desc"></result>
+            <result column="subject_id" property="subjectId"></result>
+            <result column="subject_name" property="subject"></result>
+        </collection>
+    </resultMap>
+
+    <select id="findAllSubjects" resultMap="subjectMap">
+        select * from subject
+    </select>
+    <select id="query" parameterType="int" resultMap="subjectMap">
+        select s.*,c.course_title,c.course_desc,c.id courseId
+        from course c inner join subject s
+        on c.subject_id=s.id
+        where s.id=#{id}
+    </select>
+
+</mapper>
